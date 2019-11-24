@@ -19,12 +19,15 @@ namespace shop_op
         private SqlConnection connection;
         private DataSet dataSt;
         String constr = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\Database1.mdf;Integrated Security=True";
-       
 
-        private void button1_Click(object sender, EventArgs e)
+        private void Form1_Load(object sender, EventArgs e)
         {
             connection = new SqlConnection(constr);
             connection.Open();
+        }
+        private void button1_Click(object sender, EventArgs e)
+        {
+            
             string g_id = textBox1.Text;
             string g_name = textBox2.Text;
             double g_price = Convert.ToDouble(textBox3.Text);
@@ -34,7 +37,8 @@ namespace shop_op
             SelectData(g_id);
            if (dataSt.Tables["check"] == null)
             {
-                String stmt2 = "insert into Goods VALUES (@g_id,@g_name, @g_price, @g_unit_multip , @g_unit,@g_quantity);";
+                MessageBox.Show("checkA");
+                /*String stmt2 = "insert into Goods VALUES (@g_id,@g_name, @g_price, @g_unit_multip , @g_unit,@g_quantity);";
                 SqlCommand cm = new SqlCommand(stmt2, connection);
 
                 cm.Parameters.Clear();
@@ -45,14 +49,14 @@ namespace shop_op
                 cm.Parameters.AddWithValue("g_unit", g_unit);
                 cm.Parameters.AddWithValue("g_quantity", g_quantity);
                 cm.ExecuteNonQuery();
-                MessageBox.Show("Yatta!");
+                MessageBox.Show("Yatta!");*/
             }
             else {
-                
+                MessageBox.Show("checkb");
             }
         }
         private void SelectData(String g_id){
-            MessageBox.Show("checkA");
+            
             String stmt = "Select * from Goods where Serial_no = @g_id";
             SqlCommand cm = new SqlCommand(stmt, connection);
             SqlDataAdapter adapter = new SqlDataAdapter(cm);
@@ -62,5 +66,7 @@ namespace shop_op
             dataSt = new DataSet();
             adapter.Fill(dataSt, "check");
         }
+
+       
     }
 }
