@@ -22,8 +22,13 @@ namespace shop_op
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            connection = new SqlConnection(constr);
-            
+            SqlConnection connection = new SqlConnection(constr);
+            try
+            { connection.Open(); }
+            catch (Exception Ex)
+            {
+                MessageBox.Show(Ex.ToString());
+            }
         }
         private void button1_Click(object sender, EventArgs e)
         {
@@ -41,7 +46,7 @@ namespace shop_op
                 string stmt2 = "insert into Goods (Serial_no,g_name,g_price,g_unitnum,g_unit,g_quantity) VALUES (@g_id,@g_name, @g_price, @g_unit_multip , @g_unit,@g_quantity);";
                 SqlCommand cm2 = new SqlCommand(stmt2,connection);
 
-                
+                cm2.Parameters.Clear();
                 cm2.Parameters.AddWithValue("g_id", g_id);
                 cm2.Parameters.AddWithValue("g_name", g_name);
                 cm2.Parameters.AddWithValue("g_price", g_price);
@@ -65,8 +70,8 @@ namespace shop_op
             }
         }
         private void SelectData(String g_id){
-            connection.Open();
-            string stmt = "Select * from Goods where Serial_no = @g_id";
+           
+            string stmt = "Select * from Goods where (Serial_no = @g_id);";
             SqlCommand cm = new SqlCommand(stmt, connection);
             SqlDataAdapter adapter = new SqlDataAdapter(cm);
             cm.Parameters.Clear();
