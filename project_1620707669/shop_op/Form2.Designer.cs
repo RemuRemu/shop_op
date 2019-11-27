@@ -53,6 +53,7 @@
             this.ชำระสนคาToolStripMenuItem.Name = "ชำระสนคาToolStripMenuItem";
             this.ชำระสนคาToolStripMenuItem.Size = new System.Drawing.Size(65, 20);
             this.ชำระสนคาToolStripMenuItem.Text = "ชำระสินค้า";
+            this.ชำระสนคาToolStripMenuItem.Click += new System.EventHandler(this.ชำระสนคาToolStripMenuItem_Click);
             // 
             // เพมสนคาToolStripMenuItem
             // 

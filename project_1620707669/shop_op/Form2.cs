@@ -37,5 +37,12 @@ namespace shop_op
             f3.MdiParent = this;
             f3.Show();
         }
+
+        private void ชำระสนคาToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Form4 f4 = new Form4();
+            f4.MdiParent = this;
+            f4.Show();
+        }
     }
 }

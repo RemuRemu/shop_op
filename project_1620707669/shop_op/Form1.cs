@@ -55,7 +55,7 @@ namespace shop_op
                 cm2.Parameters.AddWithValue("g_quantity", g_quantity);
                 cm2.ExecuteNonQuery();
                 connection.Close();
-                MessageBox.Show(g_id+g_name+g_quantity);
+                MessageBox.Show("เพิ่มสินค้าใหม่แล้ว");
             }
             else {
                 int db_quantity = Convert.ToInt32(dataSt.Tables["check"].Rows[0]["g_quantity"]);
@@ -67,6 +67,7 @@ namespace shop_op
                 cm2.Parameters.AddWithValue("g_id", g_id);
                 cm2.ExecuteNonQuery();
                 connection.Close();
+                MessageBox.Show("แก้ไขจำนวนแล้ว");
             }
         }
         private void SelectData(String g_id){
