@@ -16,6 +16,7 @@ namespace shop_op
         private DataSet dataSt;
         private IList<Goods> cart = new List<Goods>();
         private double total_price;
+        private Boolean iscustomer = false;
         public Form4()
         {
             InitializeComponent();
@@ -47,9 +48,10 @@ namespace shop_op
                 good.G_price = Convert.ToDouble(dataSt.Tables["checkout"].Rows[0]["g_price"]);
                 good.G_unit = dataSt.Tables["checkout"].Rows[0]["g_unit"].ToString();
                 good.G_unitnum = dataSt.Tables["checkout"].Rows[0]["g_unitnum"].ToString();
+                good.G_quantity = multiply_good;
                 cart.Add(good);
                 total_price += good.G_price*multiply_good;
-                string addlistbox = good.Serial_no1 +" "+ good.G_name+" "+good.G_unit+good.G_unitnum+" "+ good.G_price+"@"+multiply_good;
+                string addlistbox = good.Serial_no1 +" "+ good.G_name+" "+good.G_unitnum+good.G_unit+" "+ good.G_price+"bath@"+multiply_good;
                 listBox1.Items.Add(addlistbox);
                 label2.Text ="ราคาทั้งหมด : "+total_price;
             }           
@@ -68,19 +70,43 @@ namespace shop_op
 
         private void Button2_Click(object sender, EventArgs e)
         {
+            if (iscustomer == true) {
+                int c_point = Convert.ToInt32(dataSt.Tables["customers"].Rows[0]["c_point"]) + (int)Math.Floor(total_price);
+                string stmt = "UPDATE Customers SET c_point = @c_point WHERE c_no = @c_no";
+                SqlCommand cm = new SqlCommand(stmt, connection);
+                cm.Parameters.Clear();
+                cm.Parameters.AddWithValue("@c_point", c_point);
+                cm.Parameters.AddWithValue("c_no", dataSt.Tables["customers"].Rows[0]["c_no"].ToString());
+                cm.ExecuteNonQuery();
+                MessageBox.Show(c_point.ToString() + dataSt.Tables["customers"].Rows[0]["c_no"].ToString()); ;
 
+            }
+            for (int i = 0; i < cart.Count; i++) {
+                Goods goods = cart[i];
+                findGoods(goods.Serial_no1);
+                string stmt2 = "UPDATE Goods SET g_quantity= @g_quantity WHERE Serial_no = @Serial_no";
+                SqlCommand cm2 = new SqlCommand(stmt2, connection);
+                cm2.Parameters.Clear();
+                cm2.Parameters.AddWithValue("g_quantity", Convert.ToInt32(dataSt.Tables["checkout"].Rows[0]["g_quantity"])-goods.G_quantity);
+                cm2.Parameters.AddWithValue("Serial_no", goods.Serial_no1);
+                cm2.ExecuteNonQuery();
+                MessageBox.Show(goods.Serial_no1);
+            }
+            
         }
 
         private void Button3_Click(object sender, EventArgs e)
         {
             string c_no = textBox2.Text;
             findCustomers(c_no);
-            if (dataSt.Tables["checkout"].Rows.Count == 0)
+            if (dataSt.Tables["customers"].Rows.Count == 0)
             {
                 MessageBox.Show("รหัสสมาชิก/เบอร์โทรศัพท์ไม่ถูกต้อง");
             }
             else {
-                
+                iscustomer = true;
+                label4.Text = dataSt.Tables["customers"].Rows[0]["c_name"].ToString();
+                label5.Text = dataSt.Tables["customers"].Rows[0]["c_address"].ToString();
             }
         }
         private void findCustomers(string c_no) {

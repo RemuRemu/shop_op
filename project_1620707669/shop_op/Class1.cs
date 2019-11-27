@@ -13,11 +13,12 @@ namespace shop_op
         private double g_price;
         private string g_unitnum;
         private string g_unit;
-
+        private int g_quantity;
         public string Serial_no1 { get => Serial_no; set => Serial_no = value; }
         public string G_name { get => g_name; set => g_name = value; }
         public double G_price { get => g_price; set => g_price = value; }
         public string G_unitnum { get => g_unitnum; set => g_unitnum = value; }
         public string G_unit { get => g_unit; set => g_unit = value; }
+        public int G_quantity { get => g_quantity; set => g_quantity = value; }
     }
 }

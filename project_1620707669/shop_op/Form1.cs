@@ -18,11 +18,12 @@ namespace shop_op
         }
         private SqlConnection connection;
         private DataSet dataSt;
-        string constr = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\Database1.mdf;Integrated Security=True";
+        
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            SqlConnection connection = new SqlConnection(constr);
+            string constr = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\Database1.mdf;Integrated Security=True";
+            connection = new SqlConnection(constr);
             try
             { connection.Open(); }
             catch (Exception Ex)
@@ -43,7 +44,7 @@ namespace shop_op
            if (dataSt.Tables["check"].Rows.Count == 0)
             {
                 
-                string stmt2 = "insert into Goods (Serial_no,g_name,g_price,g_unitnum,g_unit,g_quantity) VALUES (@g_id,@g_name, @g_price, @g_unit_multip , @g_unit,@g_quantity);";
+                string stmt2 = "INSERT INTO Goods (Serial_no,g_name,g_price,g_unitnum,g_unit,g_quantity) VALUES (@g_id,@g_name, @g_price, @g_unit_multip , @g_unit,@g_quantity);";
                 SqlCommand cm2 = new SqlCommand(stmt2,connection);
 
                 cm2.Parameters.Clear();
@@ -54,7 +55,7 @@ namespace shop_op
                 cm2.Parameters.AddWithValue("g_unit", g_unit);
                 cm2.Parameters.AddWithValue("g_quantity", g_quantity);
                 cm2.ExecuteNonQuery();
-                connection.Close();
+              
                 MessageBox.Show("เพิ่มสินค้าใหม่แล้ว");
             }
             else {
@@ -66,13 +67,13 @@ namespace shop_op
                 cm2.Parameters.AddWithValue("new_quantity", new_quantity);
                 cm2.Parameters.AddWithValue("g_id", g_id);
                 cm2.ExecuteNonQuery();
-                connection.Close();
+              
                 MessageBox.Show("แก้ไขจำนวนแล้ว");
             }
         }
         private void SelectData(String g_id){
            
-            string stmt = "Select * from Goods where (Serial_no = @g_id);";
+            string stmt = "SELECT * from Goods WHERE (Serial_no = @g_id);";
             SqlCommand cm = new SqlCommand(stmt, connection);
             SqlDataAdapter adapter = new SqlDataAdapter(cm);
             cm.Parameters.Clear();
