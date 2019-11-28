@@ -53,12 +53,12 @@ namespace shop_op
                 total_price += good.G_price*multiply_good;
                 string addlistbox = good.Serial_no1 +" "+ good.G_name+" "+good.G_unitnum+good.G_unit+" "+ good.G_price+"bath@"+multiply_good;
                 listBox1.Items.Add(addlistbox);
-                label2.Text ="ราคาทั้งหมด : "+total_price;
+                label2.Text ="ราคาทั้งหมด : "+total_price+" บาท";
             }           
         }
 
         private void findGoods(string Serial_no) {
-            string stmt = "SELECT * FROM Goods where Serial_no = @Serial_no";
+            string stmt = "SELECT * FROM Goods WHERE Serial_no = @Serial_no";
             SqlCommand cm = new SqlCommand(stmt, connection);
             SqlDataAdapter adapter = new SqlDataAdapter(cm);
             cm.Parameters.Clear();
@@ -85,12 +85,14 @@ namespace shop_op
                 Goods goods = cart[i];
                 findGoods(goods.Serial_no1);
                 string stmt2 = "UPDATE Goods SET g_quantity= @g_quantity WHERE Serial_no = @Serial_no";
+                int new_quantity = Convert.ToInt32(dataSt.Tables["checkout"].Rows[0]["g_quantity"]) - goods.G_quantity;
                 SqlCommand cm2 = new SqlCommand(stmt2, connection);
                 cm2.Parameters.Clear();
-                cm2.Parameters.AddWithValue("g_quantity", Convert.ToInt32(dataSt.Tables["checkout"].Rows[0]["g_quantity"])-goods.G_quantity);
+                cm2.Parameters.AddWithValue("g_quantity", new_quantity);
                 cm2.Parameters.AddWithValue("Serial_no", goods.Serial_no1);
+                
                 cm2.ExecuteNonQuery();
-                MessageBox.Show(goods.Serial_no1);
+                MessageBox.Show(goods.Serial_no1+" "+new_quantity);
             }
             
         }

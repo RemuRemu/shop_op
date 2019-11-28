@@ -44,7 +44,7 @@ namespace shop_op
            if (dataSt.Tables["check"].Rows.Count == 0)
             {
                 
-                string stmt2 = "INSERT INTO Goods (Serial_no,g_name,g_price,g_unitnum,g_unit,g_quantity) VALUES (@g_id,@g_name, @g_price, @g_unit_multip , @g_unit,@g_quantity);";
+                string stmt2 = "INSERT INTO Goods(Serial_no,g_name,g_price,g_unitnum,g_unit,g_quantity) VALUES (@g_id,@g_name, @g_price, @g_unit_multip , @g_unit,@g_quantity);";
                 SqlCommand cm2 = new SqlCommand(stmt2,connection);
 
                 cm2.Parameters.Clear();
