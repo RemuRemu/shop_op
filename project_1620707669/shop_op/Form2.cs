@@ -17,11 +17,6 @@ namespace shop_op
             InitializeComponent();
         }
 
-        private void addStockToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            
-            
-        }
 
         private void goodsToolStripMenuItem_Click(object sender, EventArgs e)
         {
