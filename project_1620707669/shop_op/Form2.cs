@@ -39,5 +39,11 @@ namespace shop_op
             f4.MdiParent = this;
             f4.Show();
         }
+
+        private void Form2_Load(object sender, EventArgs e)
+        {
+            this.TopMost = true;
+            this.WindowState = FormWindowState.Maximized;
+        }
     }
 }

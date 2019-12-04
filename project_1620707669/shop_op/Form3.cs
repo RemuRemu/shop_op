@@ -37,6 +37,8 @@ namespace shop_op
                 cm.Parameters.AddWithValue("c_email", c_email);
                 cm.Parameters.AddWithValue("c_phone", c_phone);
                 cm.ExecuteNonQuery();
+                findCustomers();
+                dataGridView1.DataSource = dataSt.Tables["lcustomers"];
                 MessageBox.Show("สมัครสมาชิกใหม่เรียบร้อยแล้ว");
             }
             else { MessageBox.Show("รหัสบัตรนี้มีผู้ใช้งานแล้ว"); }
@@ -45,6 +47,8 @@ namespace shop_op
 
         private void Form3_Load(object sender, EventArgs e)
         {
+            // TODO: This line of code loads data into the 'database1DataSet1.Customers' table. You can move, or remove it, as needed.
+            this.customersTableAdapter.Fill(this.database1DataSet1.Customers);
             string constr = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\Database1.mdf;Integrated Security=True";
             connection = new SqlConnection(constr);
             connection.Open();
@@ -61,5 +65,16 @@ namespace shop_op
             adapter.Fill(dataSt, "customers");
 
         }
+        private void findCustomers()
+        {
+            string stmt = "SELECT * FROM Customers";
+            SqlCommand cm = new SqlCommand(stmt, connection);
+            SqlDataAdapter adapter = new SqlDataAdapter(cm);
+            cm.ExecuteNonQuery();
+            dataSt = new DataSet();
+            adapter.Fill(dataSt, "lcustomers");
+
+        }
+
     }
 }

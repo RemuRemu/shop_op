@@ -22,6 +22,8 @@ namespace shop_op
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            // TODO: This line of code loads data into the 'database1DataSet.Goods' table. You can move, or remove it, as needed.
+            this.goodsTableAdapter.Fill(this.database1DataSet.Goods);
             string constr = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\Database1.mdf;Integrated Security=True";
             connection = new SqlConnection(constr);
             try
@@ -37,6 +39,9 @@ namespace shop_op
             string g_id = textBox1.Text;
             string g_name = textBox2.Text;
             double g_price = Convert.ToDouble(textBox3.Text);
+           if (textBox3.Text == null) {
+                g_price = 0;
+                }
             int g_unit_multip = Convert.ToInt32(numericUpDown1.Value);
             string g_unit = textBox4.Text;
             int g_quantity = Convert.ToInt32(textBox5.Text);
@@ -55,7 +60,8 @@ namespace shop_op
                 cm2.Parameters.AddWithValue("g_unit", g_unit);
                 cm2.Parameters.AddWithValue("g_quantity", g_quantity);
                 cm2.ExecuteNonQuery();
-              
+                loadData();
+                dataGridView1.DataSource = dataSt.Tables["goods"];
                 MessageBox.Show("เพิ่มสินค้าใหม่แล้ว");
             }
             else {
@@ -67,7 +73,8 @@ namespace shop_op
                 cm2.Parameters.AddWithValue("new_quantity", new_quantity);
                 cm2.Parameters.AddWithValue("g_id", g_id);
                 cm2.ExecuteNonQuery();
-              
+                loadData();
+                dataGridView1.DataSource = dataSt.Tables["goods"];
                 MessageBox.Show("แก้ไขจำนวนแล้ว");
             }
         }
@@ -84,6 +91,20 @@ namespace shop_op
             
         }
 
-       
+       private void loadData(){
+            string stmt = "SELECT * from Goods;";
+            SqlCommand cm = new SqlCommand(stmt, connection);
+            SqlDataAdapter adapter = new SqlDataAdapter(cm);
+   
+            cm.ExecuteNonQuery();
+            dataSt = new DataSet();
+            adapter.Fill(dataSt, "goods");
+        }
+
+        private void Button2_Click(object sender, EventArgs e)
+        {
+            loadData();
+            dataGridView1.DataSource = dataSt.Tables["goods"];
+        }
     }
 }
