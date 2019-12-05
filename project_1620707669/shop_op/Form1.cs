@@ -46,36 +46,43 @@ namespace shop_op
             string g_unit = textBox4.Text;
             int g_quantity = Convert.ToInt32(textBox5.Text);
             SelectData(g_id);
-           if (dataSt.Tables["check"].Rows.Count == 0)
-            {
-                
-                string stmt2 = "INSERT INTO Goods(Serial_no,g_name,g_price,g_unitnum,g_unit,g_quantity) VALUES (@g_id,@g_name, @g_price, @g_unit_multip , @g_unit,@g_quantity);";
-                SqlCommand cm2 = new SqlCommand(stmt2,connection);
-
-                cm2.Parameters.Clear();
-                cm2.Parameters.AddWithValue("g_id", g_id);
-                cm2.Parameters.AddWithValue("g_name", g_name);
-                cm2.Parameters.AddWithValue("g_price", g_price);
-                cm2.Parameters.AddWithValue("g_unit_multip", g_unit_multip);
-                cm2.Parameters.AddWithValue("g_unit", g_unit);
-                cm2.Parameters.AddWithValue("g_quantity", g_quantity);
-                cm2.ExecuteNonQuery();
-                loadData();
-                dataGridView1.DataSource = dataSt.Tables["goods"];
-                MessageBox.Show("เพิ่มสินค้าใหม่แล้ว");
+            if (textBox1.Text == null || textBox5.Text == null) {
+                MessageBox.Show("กรุณากรอก Serial No และ จำนวนสินค้า");
             }
-            else {
-                int db_quantity = Convert.ToInt32(dataSt.Tables["check"].Rows[0]["g_quantity"]);
-                int new_quantity = db_quantity + g_quantity;
-                string stmt2 = "UPDATE Goods SET g_quantity = @new_quantity WHERE Serial_no = @g_id;";
-                SqlCommand cm2 = new SqlCommand(stmt2, connection);
-                cm2.Parameters.Clear();
-                cm2.Parameters.AddWithValue("new_quantity", new_quantity);
-                cm2.Parameters.AddWithValue("g_id", g_id);
-                cm2.ExecuteNonQuery();
-                loadData();
-                dataGridView1.DataSource = dataSt.Tables["goods"];
-                MessageBox.Show("แก้ไขจำนวนแล้ว");
+            else
+            {
+                if (dataSt.Tables["check"].Rows.Count == 0)
+                {
+
+                    string stmt2 = "INSERT INTO Goods(Serial_no,g_name,g_price,g_unitnum,g_unit,g_quantity) VALUES (@g_id,@g_name, @g_price, @g_unit_multip , @g_unit,@g_quantity);";
+                    SqlCommand cm2 = new SqlCommand(stmt2, connection);
+
+                    cm2.Parameters.Clear();
+                    cm2.Parameters.AddWithValue("g_id", g_id);
+                    cm2.Parameters.AddWithValue("g_name", g_name);
+                    cm2.Parameters.AddWithValue("g_price", g_price);
+                    cm2.Parameters.AddWithValue("g_unit_multip", g_unit_multip);
+                    cm2.Parameters.AddWithValue("g_unit", g_unit);
+                    cm2.Parameters.AddWithValue("g_quantity", g_quantity);
+                    cm2.ExecuteNonQuery();
+                    loadData();
+                    dataGridView1.DataSource = dataSt.Tables["goods"];
+                    MessageBox.Show("เพิ่มสินค้าใหม่แล้ว");
+                }
+                else
+                {
+                    int db_quantity = Convert.ToInt32(dataSt.Tables["check"].Rows[0]["g_quantity"]);
+                    int new_quantity = db_quantity + g_quantity;
+                    string stmt2 = "UPDATE Goods SET g_quantity = @new_quantity WHERE Serial_no = @g_id;";
+                    SqlCommand cm2 = new SqlCommand(stmt2, connection);
+                    cm2.Parameters.Clear();
+                    cm2.Parameters.AddWithValue("new_quantity", new_quantity);
+                    cm2.Parameters.AddWithValue("g_id", g_id);
+                    cm2.ExecuteNonQuery();
+                    loadData();
+                    dataGridView1.DataSource = dataSt.Tables["goods"];
+                    MessageBox.Show("แก้ไขจำนวนแล้ว");
+                }
             }
         }
         private void SelectData(String g_id){
