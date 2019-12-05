@@ -28,7 +28,8 @@ namespace shop_op
             String c_email = textBox3.Text;
             String c_phone = textBox5.Text;
             findCustomers(c_no);
-            if (dataSt.Tables["customers"].Rows.Count == 0) {
+            if (dataSt.Tables["customers"].Rows.Count == 0) // ถ้าไม่มีข้อมูลในตารางแปลว่า บัตรนี้สามารถใช้งานได้ และทำการสมัครสมาชิก
+            {
                 string stmt = "INSERT INTO Customers VALUES(@c_no,@c_name,@c_address,@c_email,@c_phone,0)";
                 SqlCommand cm = new SqlCommand(stmt,connection);
                 cm.Parameters.AddWithValue("c_no",c_no);
@@ -51,10 +52,18 @@ namespace shop_op
             this.customersTableAdapter.Fill(this.database1DataSet1.Customers);
             string constr = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\Database1.mdf;Integrated Security=True";
             connection = new SqlConnection(constr);
-            connection.Open();
+            try // try open connection
+            {
+                connection.Open();
+            }
+            catch (Exception Ex)
+            {
+                MessageBox.Show(Ex.ToString());
+            }
         }
         private void findCustomers(string c_no)
         {
+            // ตรวจสอบรหัสบัตรจาก DB ด้วยรหัสของบัตรสมาชิก
             string stmt = "SELECT * FROM Customers where c_no = @customers or c_phone = @customers";
             SqlCommand cm = new SqlCommand(stmt, connection);
             SqlDataAdapter adapter = new SqlDataAdapter(cm);
@@ -67,6 +76,7 @@ namespace shop_op
         }
         private void findCustomers()
         {
+            // นำค่าจากตารางเตรียมแก้ไข dataGridView
             string stmt = "SELECT * FROM Customers";
             SqlCommand cm = new SqlCommand(stmt, connection);
             SqlDataAdapter adapter = new SqlDataAdapter(cm);

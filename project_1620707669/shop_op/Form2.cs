@@ -42,6 +42,7 @@ namespace shop_op
 
         private void Form2_Load(object sender, EventArgs e)
         {
+            //ตั้งเป็น Fullscreen เมื่อเริ่มโปรแกรม
             this.TopMost = true;
             this.WindowState = FormWindowState.Maximized;
         }
