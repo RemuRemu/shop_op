@@ -93,8 +93,11 @@ namespace shop_op
                 cm.Parameters.AddWithValue("@c_point", c_point);
                 cm.Parameters.AddWithValue("c_no", dataSt.Tables["customers"].Rows[0]["c_no"].ToString());
                 cm.ExecuteNonQuery();
-                MessageBox.Show(c_point.ToString() + dataSt.Tables["customers"].Rows[0]["c_no"].ToString()); ;
-
+  
+                label6.Text = "ชื่อสมาชิก : " + dataSt.Tables["customers"].Rows[0]["c_name"].ToString();
+                label7.Text = "รหัสสมาชิก : " + dataSt.Tables["customers"].Rows[0]["c_no"].ToString();
+                label8.Text = dataSt.Tables["customers"].Rows[0]["c_address"].ToString();
+                label9.Text = "คะแนนสะสม : " + c_point;
             }
             
             for (int i = 0; i < cart.Count; i++) {
@@ -110,9 +113,15 @@ namespace shop_op
                 cm2.Parameters.AddWithValue("g_quantity", new_quantity);
                 cm2.Parameters.AddWithValue("Serial_no", goods.Serial_no1);
                 cm2.ExecuteNonQuery();
+                listBox3.Items.Add(goods.G_quantity);
+                listBox2.Items.Add(goods.Serial_no1 + " "+goods.G_name);
+                listBox5.Items.Add(goods.G_unitnum + " " + goods.G_unit);
+                listBox4.Items.Add(goods.G_price);
+                listBox6.Items.Add(goods.G_price * goods.G_quantity);
+                label10.Text = "เวลา : "+DateTime.Now.ToString();
             }
             MessageBox.Show("ชำระสินค้าเรียบร้อยแล้ว");
-
+           
         }
 
         private void Button3_Click(object sender, EventArgs e)
